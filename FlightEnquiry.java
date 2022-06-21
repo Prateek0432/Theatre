@@ -2,11 +2,13 @@ package com.example.demo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -99,6 +101,30 @@ public class FlightEnquiry {
 		flightList.add(flightObj);
 		ResponseStatus rep = new ResponseStatus();
 		rep.setMsg("Flight added successfully.....");
+		return rep;
+	}
+	@PutMapping("/modifyFlight")
+	public ResponseStatus modifyFlightObject(@RequestBody Flight flightObj)
+	{
+		System.out.println("add flight object()......");
+		boolean found = false;
+		for (int i = 0; i < flightList.size(); i++) {
+			Flight temFlight = flightList.get(i);
+			if(temFlight.getFlightNumber()==flightObj.getFlightNumber()) {
+				flightList.remove(i);
+				flightList.add(flightObj);
+				found=true;
+				break;
+			}
+			
+		}
+		ResponseStatus rep = new ResponseStatus();
+		if(found== true) {
+		rep.setMsg("Flight modified successfully.....");
+		}
+		else {
+			rep.setMsg("Flight not found.....");
+		}
 		return rep;
 	}
 }
